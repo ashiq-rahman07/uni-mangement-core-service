@@ -1,31 +1,29 @@
-import { Prisma, Student } from '@prisma/client';
+import { Prisma, Room } from '@prisma/client';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/common';
 import { IPaginationOptions } from '../../../interfaces/pagination';
 import prisma from '../../../shared/prisma';
 import {
-  studentRelationalFields,
-  studentRelationalFieldsMapper,
-  studentSearchableFields,
-} from './student.constants';
-import { IStudentFilterRequest } from './student.interface';
+  roomRelationalFields,
+  roomRelationalFieldsMapper,
+  roomSearchableFields,
+} from './room.constants';
+import { IRoomFilterRequest } from './room.interface';
 
-const insertIntoDB = async (data: Student): Promise<Student> => {
-  const result = await prisma.student.create({
+const insertIntoDB = async (data: Room): Promise<Room> => {
+  const result = await prisma.room.create({
     data,
     include: {
-      academicFaculty: true,
-      academicDepartment: true,
-      academicSemester: true,
+      building: true,
     },
   });
   return result;
 };
 
 const getAllFromDB = async (
-  filters: IStudentFilterRequest,
+  filters: IRoomFilterRequest,
   options: IPaginationOptions
-): Promise<IGenericResponse<Student[]>> => {
+): Promise<IGenericResponse<Room[]>> => {
   const { limit, page, skip } = paginationHelpers.calculatePagination(options);
   const { searchTerm, ...filterData } = filters;
 
@@ -33,7 +31,7 @@ const getAllFromDB = async (
 
   if (searchTerm) {
     andConditions.push({
-      OR: studentSearchableFields.map(field => ({
+      OR: roomSearchableFields.map(field => ({
         [field]: {
           contains: searchTerm,
           mode: 'insensitive',
@@ -45,9 +43,9 @@ const getAllFromDB = async (
   if (Object.keys(filterData).length > 0) {
     andConditions.push({
       AND: Object.keys(filterData).map(key => {
-        if (studentRelationalFields.includes(key)) {
+        if (roomRelationalFields.includes(key)) {
           return {
-            [studentRelationalFieldsMapper[key]]: {
+            [roomRelationalFieldsMapper[key]]: {
               id: (filterData as any)[key],
             },
           };
@@ -62,14 +60,12 @@ const getAllFromDB = async (
     });
   }
 
-  const whereConditions: Prisma.StudentWhereInput =
+  const whereConditions: Prisma.RoomWhereInput =
     andConditions.length > 0 ? { AND: andConditions } : {};
 
-  const result = await prisma.student.findMany({
+  const result = await prisma.room.findMany({
     include: {
-      academicFaculty: true,
-      academicDepartment: true,
-      academicSemester: true,
+      building: true,
     },
     where: whereConditions,
     skip,
@@ -81,7 +77,7 @@ const getAllFromDB = async (
             createdAt: 'desc',
           },
   });
-  const total = await prisma.student.count({
+  const total = await prisma.room.count({
     where: whereConditions,
   });
 
@@ -95,56 +91,50 @@ const getAllFromDB = async (
   };
 };
 
-const getByIdFromDB = async (id: string): Promise<Student | null> => {
-  const result = await prisma.student.findUnique({
+const getByIdFromDB = async (id: string): Promise<Room | null> => {
+  const result = await prisma.room.findUnique({
     where: {
       id,
     },
     include: {
-      academicFaculty: true,
-      academicDepartment: true,
-      academicSemester: true,
+      building: true,
     },
   });
   return result;
 };
 
-const updateIntoDB = async (
+const updateOneInDB = async (
   id: string,
-  payload: Partial<Student>
-): Promise<Student> => {
-  const result = await prisma.student.update({
+  payload: Partial<Room>
+): Promise<Room> => {
+  const result = await prisma.room.update({
     where: {
       id,
     },
     data: payload,
     include: {
-      academicSemester: true,
-      academicDepartment: true,
-      academicFaculty: true,
+      building: true,
     },
   });
   return result;
 };
 
-const deleteFromDB = async (id: string): Promise<Student> => {
-  const result = await prisma.student.delete({
+const deleteByIdFromDB = async (id: string): Promise<Room> => {
+  const result = await prisma.room.delete({
     where: {
       id,
     },
     include: {
-      academicSemester: true,
-      academicDepartment: true,
-      academicFaculty: true,
+      building: true,
     },
   });
   return result;
 };
 
-export const StudentService = {
+export const RoomService = {
   insertIntoDB,
   getAllFromDB,
   getByIdFromDB,
-  updateIntoDB,
-  deleteFromDB,
+  updateOneInDB,
+  deleteByIdFromDB,
 };
