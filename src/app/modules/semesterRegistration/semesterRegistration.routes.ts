@@ -13,8 +13,15 @@ router.get('/:id', SemesterRegistrationController.getByIdFromDB);
 router.post(
   '/',
   validateRequest(SemesterRegistrationValidation.create),
-  auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
+  // auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
   SemesterRegistrationController.insertIntoDB
+);
+
+router.patch(
+  '/:id',
+  validateRequest(SemesterRegistrationValidation.update),
+  // auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
+  SemesterRegistrationController.updateOneInDB
 );
 
 router.delete(
