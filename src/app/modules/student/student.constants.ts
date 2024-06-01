@@ -8,7 +8,7 @@ export const studentFilterableFields: string[] = [
   'gender',
   'academicFacultyId',
   'academicDepartmentId',
-  'academicSemesterId',
+  'academicSemesterId'
 ];
 
 export const studentSearchableFields: string[] = [
@@ -17,16 +17,19 @@ export const studentSearchableFields: string[] = [
   'middleName',
   'email',
   'contactNo',
-  'studentId',
+  'studentId'
 ];
 
 export const studentRelationalFields: string[] = [
   'academicFacultyId',
   'academicDepartmentId',
-  'academicSemesterId',
+  'academicSemesterId'
 ];
 export const studentRelationalFieldsMapper: { [key: string]: string } = {
   academicFacultyId: 'academicFaculty',
   academicDepartmentId: 'academicDepartment',
-  academicSemesterId: 'academicSemester',
+  academicSemesterId: 'academicSemester'
 };
+
+export const EVENT_STUDENT_CREATED = 'student.created'
+export const EVENT_STUDENT_UPDATED = 'student.updated'

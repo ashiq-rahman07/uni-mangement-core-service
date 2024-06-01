@@ -8,24 +8,24 @@ export type IStudentFilterRequest = {
   contactNo?: string | undefined;
   gender?: string | undefined;
   bloodGroup?: string | undefined;
-};
+}
 
 export type IStudentMyCoursesRequest = {
   academicSemesterId?: string | undefined;
   courseId?: string | undefined;
-};
+}
 
 export type IStudentMyCourseSchedulesRequest = {
   academicSemesterId?: string | undefined;
   courseId?: string | undefined;
-};
+}
 
 export type StudentCreatedEvent = {
   id: string;
   name: {
-    firstName: string;
-    lastName: string;
-    middleName?: string;
+      firstName: string;
+      lastName: string;
+      middleName?: string;
   };
   dateOfBirth: string;
   gender: string;
@@ -34,22 +34,22 @@ export type StudentCreatedEvent = {
   contactNo: string;
   profileImage: string;
   academicFaculty: {
-    syncId: string;
+      syncId: string;
   };
   academicDepartment: {
-    syncId: string;
+      syncId: string;
   };
   academicSemester: {
-    syncId: string;
+      syncId: string;
   };
 };
 
 export type StudentUpdatedEvent = {
   id: string;
   name: {
-    firstName: string;
-    lastName: string;
-    middleName?: string;
+      firstName: string;
+      lastName: string;
+      middleName?: string;
   };
   dateOfBirth: string;
   gender: string;
@@ -58,12 +58,12 @@ export type StudentUpdatedEvent = {
   contactNo: string;
   profileImage: string;
   academicFaculty: {
-    syncId: string;
+      syncId: string;
   };
   academicDepartment: {
-    syncId: string;
+      syncId: string;
   };
   academicSemester: {
-    syncId: string;
+      syncId: string;
   };
 };
